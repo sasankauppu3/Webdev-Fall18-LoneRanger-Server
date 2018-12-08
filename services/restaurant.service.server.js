@@ -28,7 +28,6 @@ module.exports = function (app) {
 
     findAllRestaurantsByLocation = (req, res) => {
         var location = req.params['location'];
-        console.log(location)
         const searchRequest = {
             location: location
         };
@@ -42,9 +41,6 @@ module.exports = function (app) {
         var name = req.params['name'];
         var Id = req.params['Id'];
         var location = req.params['location'];
-        console.log('name')
-        console.log(Id)
-        console.log(location)
         const searchRequest = {
             term: name,
             location: location
