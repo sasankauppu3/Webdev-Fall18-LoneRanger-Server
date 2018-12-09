@@ -8,11 +8,15 @@ findUserByUsername = (username) => userModel.findOne({username: username},{passw
 
 findUserByCredentials = (username, password) => userModel.findOne({username: username, password: password},{password: 0})
 
-createUser = (user) => userModel.create(user)
+createUser = (user) => {userModel.create(user)}
 
 deleteUser = (userId) => userModel.remove({_id: userId})
 
 updateUser = (userId, newUser) => userModel.update({_id: userId}, {$set: newUser})
+
+addFollowing = (followingId, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {following: followingId}})
+
+addFollower = (followerId, userId) => userModel.findByIdAndUpdate(followerId, {$addToSet: {followers: userId}})
 
 module.exports = {
     findUserById: findUserById,
@@ -21,5 +25,7 @@ module.exports = {
     findUserByCredentials: findUserByCredentials,
     createUser: createUser,
     deleteUser: deleteUser,
-    updateUser: updateUser
+    updateUser: updateUser,
+    addFollowing: addFollowing,
+    addFollower: addFollower
 };

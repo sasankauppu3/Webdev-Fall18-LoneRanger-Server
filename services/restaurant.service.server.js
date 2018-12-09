@@ -14,11 +14,12 @@ module.exports = function (app) {
     }));
 
 
-    findRestaurantByName = (req, res) => {
+    findRestaurantByNameAndLocation = (req, res) => {
         var name = req.params['name'];
+        var location = req.params['location'];
         const searchRequest = {
             term: name,
-            location: 'Boston'
+            location: location
         };
         client.search(searchRequest).then(response => {
             res.send(response.jsonBody.businesses);
@@ -37,35 +38,38 @@ module.exports = function (app) {
             res.send(e);
         });};
 
-    findRestaurantByNameAndID = (req, res) => {
+
+
+    findRestaurantByNameAndIdAndLocation = (req, res) => {
+        console.log("fds");
+        var Id = req.params['rid'];
         var name = req.params['name'];
-        var Id = req.params['Id'];
-        var location = req.params['location'];
+        var lat = req.params['lat'];
+        var lng = req.params['lng'];
         const searchRequest = {
             term: name,
-            location: location
+            latitude: lat,
+            longitude: lng
         };
+        var result;
         client.search(searchRequest).then(response => {
-            var restaurantList = response.jsonBody.businesses;
-            var result;
+            restaurantList = response.jsonBody.businesses;
             for(var i = 0; i < restaurantList.length; i++){
                 if(restaurantList[i].hasOwnProperty('id') && restaurantList[i]['id'] === Id) {
                     result = restaurantList[i];
+                    console.log(result)
                     res.send(result);
                     break;
                 }
             }
-
+            // res.send(response.jsonBody.businesses)
         }).catch(e => {
             res.send(e);
         });};
 
-
-
-
     //USER REST API CALLS
-    app.get('/api/restaurant/name/:name', findRestaurantByName);
+    app.get('/api/restaurant/name/:name', findRestaurantByNameAndLocation);
     app.get('/api/restaurant/location/:location', findAllRestaurantsByLocation);
-    app.get('/api/restaurant/name/:name/Id/:Id/location/:location', findRestaurantByNameAndID);
+    app.get('/api/restaurant/name/:name/rid/:rid/lat/:lat/lng/:lng', findRestaurantByNameAndIdAndLocation);
 
 }
