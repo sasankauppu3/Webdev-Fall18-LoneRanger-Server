@@ -21,6 +21,12 @@ app.use(function(req, res, next) {
 var userService = require('./services/user.service.server')
 userService(app)
 
+var restaurantService = require('./services/restaurant.service.server')
+restaurantService(app)
+
+var reviewService = require('./services/review.service.server')
+reviewService(app)
+
 home = (req, res) =>
     res.send("Server Home")
 app.get('/', home);

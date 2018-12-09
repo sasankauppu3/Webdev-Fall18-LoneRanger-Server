@@ -14,6 +14,10 @@ deleteUser = (userId) => userModel.remove({_id: userId})
 
 updateUser = (userId, newUser) => userModel.update({_id: userId}, {$set: newUser})
 
+addFollowing = (followingId, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {following: followingId}})
+
+addFollower = (followerId, userId) => userModel.findByIdAndUpdate(followerId, {$addToSet: {followers: userId}})
+
 module.exports = {
     findUserById: findUserById,
     findAllUsers:findAllUsers,
@@ -21,5 +25,7 @@ module.exports = {
     findUserByCredentials: findUserByCredentials,
     createUser: createUser,
     deleteUser: deleteUser,
-    updateUser: updateUser
+    updateUser: updateUser,
+    addFollowing: addFollowing,
+    addFollower: addFollower
 };

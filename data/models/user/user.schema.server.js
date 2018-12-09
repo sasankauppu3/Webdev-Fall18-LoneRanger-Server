@@ -5,7 +5,10 @@ var userSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
     email: String,
-    phone: String
+    phone: String,
+    role:{type:String, enum:['influencer','generic']},
+    followers: [],
+    following: []
 }, {collection: 'User'});
 
 module.exports = userSchema;

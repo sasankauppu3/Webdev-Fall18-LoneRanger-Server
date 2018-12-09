@@ -12,7 +12,7 @@ module.exports = function (app) {
 
 
     findAllUsers = (req, res) => userDao.findAllUsers()
-            .then(function (user) {res.send(user)})
+        .then(function (user) {res.send(user)})
 
     findUserById = (req, res) => {
         var userId = req.params['userId']
@@ -50,7 +50,7 @@ module.exports = function (app) {
         if (req.session && req.session['user']) {
             userDao.findUserById(req.session['user']._id).then((user) =>
                 res.json(user))}
-         else {
+        else {
             res.send(null)}
     }
 
@@ -68,6 +68,27 @@ module.exports = function (app) {
                 })}
         else {res.send(null)}
     }
+
+    addFollowing = (req, res) => {
+        var followingId = req.params['Id']
+        var userId = req.params['userId']
+        userDao.addFollowing(followingId, userId).then(
+            function (status) {
+                res.send(status)
+            }).catch(e => {
+            res.send(e);
+        });};
+
+    addFollower = (req, res) => {
+        var followerId = req.params['Id']
+        var userId = req.params['userId']
+        console.log(followerId, userId)
+        userDao.addFollower(followerId, userId).then(
+            function (status) {
+                res.send(status)
+            }).catch(e => {
+            res.send(e);
+        });};
 
     logout = (req, res) => {
         if (req.session && req.session['user']) {
@@ -87,6 +108,12 @@ module.exports = function (app) {
             res.json({status: 'no-session-exists'})}
     }
 
+    getPublicProfile = (req, res) => {
+        var userId = req.params['pid']
+        userDao.findUserById(userId)
+            .then(function (user) {res.json(user)})}
+
+
 
 
 
@@ -96,7 +123,11 @@ module.exports = function (app) {
     app.delete('/api/user/:userId', deleteUser);
     app.post('/api/login', login);
     app.post('/api/register', register);
+    app.get('/api/profile/:pid', getPublicProfile);
+
     app.get('/api/profile', getProfile);
     app.post('/api/logout', logout);
     app.put('/api/profile', updateProfile);
+    app.put('/api/addFollowing/user/:userId/following/:Id', addFollowing);
+    app.put('/api/addFollower/user/:userId/follower/:Id', addFollower);
 }
