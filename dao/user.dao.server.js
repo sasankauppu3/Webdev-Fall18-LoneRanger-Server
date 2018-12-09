@@ -8,7 +8,7 @@ findUserByUsername = (username) => userModel.findOne({username: username},{passw
 
 findUserByCredentials = (username, password) => userModel.findOne({username: username, password: password},{password: 0})
 
-createUser = (user) => {userModel.create(user)}
+createUser = (user) => userModel.create(user)
 
 deleteUser = (userId) => userModel.remove({_id: userId})
 

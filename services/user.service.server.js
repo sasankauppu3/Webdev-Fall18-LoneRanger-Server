@@ -108,6 +108,12 @@ module.exports = function (app) {
             res.json({status: 'no-session-exists'})}
     }
 
+    getPublicProfile = (req, res) => {
+        var userId = req.params['pid']
+        userDao.findUserById(userId)
+            .then(function (user) {res.json(user)})}
+
+
 
 
 
@@ -117,6 +123,8 @@ module.exports = function (app) {
     app.delete('/api/user/:userId', deleteUser);
     app.post('/api/login', login);
     app.post('/api/register', register);
+    app.get('/api/profile/:pid', getPublicProfile);
+
     app.get('/api/profile', getProfile);
     app.post('/api/logout', logout);
     app.put('/api/profile', updateProfile);
