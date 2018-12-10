@@ -14,10 +14,27 @@ deleteUser = (userId) => userModel.remove({_id: userId})
 
 updateUser = (userId, newUser) => userModel.update({_id: userId}, {$set: newUser})
 
-addFollowing = (following, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {following: following}})
+setUserRole = (userId, role) => userModel.findByIdAndUpdate(userId, {$set: {role: role}})
+
+approveRequest = (userId) => userModel.findByIdAndUpdate(userId, {$set: {role: 'influencer', approvedFlag: true}})
+
+addFollowing = (followingId, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {following: followingId}})
 
 updateFollowers = (userID, followers) => userModel.findByIdAndUpdate(userID, )
-addFollower = (follower, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {followers: follower}})
+
+addFollower = (followerId, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {followers: followerId}})
+
+getFollowingForUser = (following) => userModel.find({_id: {$in: following}})
+
+removeFollower = (userId, followerId) => userModel.update(
+    {_id: userId },
+    { $pull: { followers: followerId } },
+);
+
+removeFollowing = (userId, followingId) => userModel.update(
+    {_id: userId },
+    { $pull: { following: followingId } },
+);
 
 module.exports = {
     findUserById: findUserById,
@@ -28,5 +45,10 @@ module.exports = {
     deleteUser: deleteUser,
     updateUser: updateUser,
     addFollowing: addFollowing,
-    addFollower: addFollower
+    addFollower: addFollower,
+    setUserRole: setUserRole,
+    approveRequest: approveRequest,
+    getFollowingForUser: getFollowingForUser,
+    removeFollower: removeFollower,
+    removeFollowing: removeFollowing
 };

@@ -6,7 +6,8 @@ var userSchema = mongoose.Schema({
     lastName: String,
     email: String,
     phone: String,
-    role:{type:String, enum:['influencer','generic']},
+    approvedFlag: Boolean,
+    role:{type:String, enum:['influencer','generic','admin']},
     followers: [],
     following: []
 }, {collection: 'User'});

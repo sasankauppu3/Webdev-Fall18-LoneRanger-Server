@@ -12,12 +12,17 @@ module.exports = function (app) {
 
 
     findAllUsers = (req, res) => userDao.findAllUsers()
-        .then(function (user) {res.send(user)})
+        .then(function (user) {
+            res.send(user)
+        })
 
     findUserById = (req, res) => {
         var userId = req.params['userId']
         userDao.findUserById(userId)
-            .then(function (user) {res.json(user)})}
+            .then(function (user) {
+                res.json(user)
+            })
+    }
 
     login = (req, res) => {
         var user = req.body
@@ -31,7 +36,8 @@ module.exports = function (app) {
                 } else {
                     res.json({status: 'user does not exists', role: null})
                 }
-            })}
+            })
+    }
 
     register = (req, res) => {
         var user = req.body
@@ -43,15 +49,19 @@ module.exports = function (app) {
                 userDao.createUser(user).then(function (user) {
                     user.password = ''
                     req.session['user'] = user
-                    res.json({status: true})})}
-        })}
+                    res.json({status: true})
+                })
+            }
+        })
+    }
 
     getProfile = (req, res) => {
         if (req.session && req.session['user']) {
             userDao.findUserById(req.session['user']._id).then((user) =>
-                res.json(user))}
-        else {
-            res.send(null)}
+                res.json(user))
+        } else {
+            res.send(null)
+        }
     }
 
 
@@ -65,101 +75,97 @@ module.exports = function (app) {
                     newUser['_id'] = id
                     req.session['user'] = newUser
                     res.send(status)
-                })}
-        else {res.send(null)}
+                })
+        } else {
+            res.send(null)
+        }
     }
 
+
     addFollowing = (req, res) => {
-        var following = req.body
+        var followingId = req.params['fId']
         var userId = req.params['userId']
-        console.log(following, userId)
-        userDao.addFollowing(following, userId).then(
+        userDao.addFollowing(followingId, userId).then(
             function (status) {
                 res.send(status)
             }).catch(e => {
             res.send(e);
-        });};
-
-    addFollowing = (req, res) => {
-        var following = req.body
-        var userId = req.params['userId']
-        console.log(following, userId)
-        userDao.addFollowing(following, userId).then(
-            function (status) {
-                res.send(status)
-            }).catch(e => {
-            res.send(e);
-        });};
-
+        });
+    };
 
     addFollower = (req, res) => {
-        var follower = req.body
+        var followerId = req.params['fId']
         var userId = req.params['userId']
-        console.log(follower, userId)
-        userDao.addFollower(follower, userId).then(
+        userDao.addFollower(followerId, userId).then(
             function (status) {
                 res.send(status)
             }).catch(e => {
             res.send(e);
-        });};
+        });
+    };
 
     removeFollower = (req, res) => {
-        var follower = req.body
+        console.log('recieved, follower')
+        var followerId = req.params['fId']
         var userId = req.params['userId']
-        console.log(userId)
-        console.log(follower.username)
-        userDao.findUserByUsername(userId).then(
-            function (user) {
-                let followerList = user.followers
-                for (let i = 0; i < followerList.length; i++){
-                    if (followerList[i].username === follower.username){
-                        followerList.splice(i, 1)
-                    }
-                }
-                user.followers = followerList
-                userDao.updateUser(userId).then(
-                    function (user) {
-                        console.log(user)
-                        res.send(user)
-                    }
-                ).catch(e => {
-                    res.send(e)
-                })
-            }
-                .catch(e => {
-                    res.send(e)
-                })        )
-        userDao.removeFollower(follower, userId).then(
-            function (status) {
-                res.send(status)
-            }).catch(e => {
-            res.send(e);
-        });};
+        userDao.removeFollower(userId, followerId).then(r => res.send(r))
+    };
+
+    removeFollowing = (req, res) => {
+        console.log('recieved, following')
+        var followingId = req.params['fId']
+        var userId = req.params['userId']
+        userDao.removeFollowing(userId, followingId).then(r => res.send(r))
+    };
 
     logout = (req, res) => {
         if (req.session && req.session['user']) {
             req.session.destroy()
-            res.send('logged-out')}
-        else {
-            res.send('no-session-exists')}
+            res.send('logged-out')
+        } else {
+            res.send('no-session-exists')
+        }
     }
 
     deleteUser = (req, res) => {
-        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
+        console.log('Here')
+        console.log(req.session['user'])
+        if (req.session && req.session['user'] && req.session['user'].role === 'admin') {
             var id = req.params['userId']
+            console.log(id)
             userDao.deleteUser(id).then(function (status) {
                 res.send(status)
-            })}
-        else {
-            res.json({status: 'no-session-exists'})}
+            })
+        } else {
+            res.json({status: 'no-session-exists'})
+        }
     }
 
     getPublicProfile = (req, res) => {
         var userId = req.params['pid']
         userDao.findUserById(userId)
-            .then(function (user) {res.json(user)})}
+            .then(function (user) {
+                res.json(user)
+            })
+    }
 
 
+    setUserRole = (req, res) => {
+        var userId = req.params['userId']
+        var role = req.params['role']
+        userDao.setUserRole(userId, role)
+            .then(function (user) {
+                res.json(user)
+            })
+    }
+
+    approveRequest = (req, res) => {
+        var userId = req.params['userId']
+        userDao.approveRequest(userId)
+            .then(function (user) {
+                res.json(user)
+            })
+    }
 
 
 
@@ -174,8 +180,10 @@ module.exports = function (app) {
     app.get('/api/profile', getProfile);
     app.post('/api/logout', logout);
     app.put('/api/profile', updateProfile);
-    app.post('/api/addFollowing/user/:userId', addFollowing);
-    app.post('/api/addFollower/user/:userId', addFollower);
-    // app.post('/api/removeFollowing/user/:userId', removeFollowing);
-    app.post('/api/removeFollower/user/:userId', removeFollower);
+    app.put('/api/user/:userId/role/:role', setUserRole);
+    app.put('/api/approve/user/:userId', approveRequest);
+    app.put('/api/addFollowing/user/:userId/following/:fId', addFollowing);
+    app.put('/api/addFollower/user/:userId/follower/:fId', addFollower);
+    app.put('/api/removeFollowing/user/:userId/following/:fId', removeFollowing);
+    app.put('/api/removeFollower/user/:userId/followers/:fId', removeFollower);
 }
