@@ -1,4 +1,5 @@
 const reviewDao = require('../dao/review.dao.server');
+const userDao = require('../dao/user.dao.server');
 
 module.exports = function (app) {
     var session = require('express-session');
@@ -18,6 +19,7 @@ module.exports = function (app) {
 
     createReviews = (req, res) => {
         var review = req.body;
+        console.log(review)
         reviewDao.createReview(review).then(function (review) {
             res.json({status: true})
         }).catch(e => {
@@ -73,6 +75,19 @@ module.exports = function (app) {
         });
     }
 
+    findAllReviewsForList = (req, res) => {
+        userId = req.params['userId'];
+        var following = []
+        userDao.findUserById(userId).then(function (user) {
+            for(let i=0; i < user.following.length;i++){
+                following.push(user.following[i].username);
+            }
+            reviewDao.findAllReviewsForList(following).then(reviews => res.send(reviews)).catch(e => res.send(e))
+        }).catch(e => {
+            res.send(e);
+        });
+    }
+
     deleteReview = (req, res) => {
         reviewId = req.params['Id'];
         console.log(reviewId)
@@ -90,6 +105,7 @@ module.exports = function (app) {
     app.get('/api/reviews/username/:username/restaurant/:Id', findReviewByUsernameForRestaurant);
     app.get('/api/reviews/username/:username', findAllReviewsForUser);
     app.delete('/api/reviews/review/:Id', deleteReview);
+    app.get('/api/reviews/following/:userId', findAllReviewsForList)
     // app.get('/api/restaurant/name/:name/Id/:Id/location/:location', findRestaurantByNameAndID);
     // app.get('/api/restaurant/name/:name/Id/:id/lat/:lat/long/:long', findRestaurantByIdAndLocation);
 

@@ -70,20 +70,66 @@ module.exports = function (app) {
     }
 
     addFollowing = (req, res) => {
-        var followingId = req.params['Id']
+        var following = req.body
         var userId = req.params['userId']
-        userDao.addFollowing(followingId, userId).then(
+        console.log(following, userId)
+        userDao.addFollowing(following, userId).then(
             function (status) {
                 res.send(status)
             }).catch(e => {
             res.send(e);
         });};
 
-    addFollower = (req, res) => {
-        var followerId = req.params['Id']
+    addFollowing = (req, res) => {
+        var following = req.body
         var userId = req.params['userId']
-        console.log(followerId, userId)
-        userDao.addFollower(followerId, userId).then(
+        console.log(following, userId)
+        userDao.addFollowing(following, userId).then(
+            function (status) {
+                res.send(status)
+            }).catch(e => {
+            res.send(e);
+        });};
+
+
+    addFollower = (req, res) => {
+        var follower = req.body
+        var userId = req.params['userId']
+        console.log(follower, userId)
+        userDao.addFollower(follower, userId).then(
+            function (status) {
+                res.send(status)
+            }).catch(e => {
+            res.send(e);
+        });};
+
+    removeFollower = (req, res) => {
+        var follower = req.body
+        var userId = req.params['userId']
+        console.log(userId)
+        console.log(follower.username)
+        userDao.findUserByUsername(userId).then(
+            function (user) {
+                let followerList = user.followers
+                for (let i = 0; i < followerList.length; i++){
+                    if (followerList[i].username === follower.username){
+                        followerList.splice(i, 1)
+                    }
+                }
+                user.followers = followerList
+                userDao.updateUser(userId).then(
+                    function (user) {
+                        console.log(user)
+                        res.send(user)
+                    }
+                ).catch(e => {
+                    res.send(e)
+                })
+            }
+                .catch(e => {
+                    res.send(e)
+                })        )
+        userDao.removeFollower(follower, userId).then(
             function (status) {
                 res.send(status)
             }).catch(e => {
@@ -128,6 +174,8 @@ module.exports = function (app) {
     app.get('/api/profile', getProfile);
     app.post('/api/logout', logout);
     app.put('/api/profile', updateProfile);
-    app.put('/api/addFollowing/user/:userId/following/:Id', addFollowing);
-    app.put('/api/addFollower/user/:userId/follower/:Id', addFollower);
+    app.post('/api/addFollowing/user/:userId', addFollowing);
+    app.post('/api/addFollower/user/:userId', addFollower);
+    // app.post('/api/removeFollowing/user/:userId', removeFollowing);
+    app.post('/api/removeFollower/user/:userId', removeFollower);
 }

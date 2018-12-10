@@ -14,9 +14,10 @@ deleteUser = (userId) => userModel.remove({_id: userId})
 
 updateUser = (userId, newUser) => userModel.update({_id: userId}, {$set: newUser})
 
-addFollowing = (followingId, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {following: followingId}})
+addFollowing = (following, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {following: following}})
 
-addFollower = (followerId, userId) => userModel.findByIdAndUpdate(followerId, {$addToSet: {followers: userId}})
+updateFollowers = (userID, followers) => userModel.findByIdAndUpdate(userID, )
+addFollower = (follower, userId) => userModel.findByIdAndUpdate(userId, {$addToSet: {followers: follower}})
 
 module.exports = {
     findUserById: findUserById,
