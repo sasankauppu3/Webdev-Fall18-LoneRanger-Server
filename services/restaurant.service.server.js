@@ -17,11 +17,14 @@ module.exports = function (app) {
     findRestaurantByNameAndLocation = (req, res) => {
         var name = req.params['name'];
         var location = req.params['location'];
+        console.log(name)
+        console.log(location)
         const searchRequest = {
             term: name,
             location: location
         };
         client.search(searchRequest).then(response => {
+            console.log(response.jsonBody.businesses)
             res.send(response.jsonBody.businesses);
         }).catch(e => {
             res.send(e);
@@ -68,7 +71,7 @@ module.exports = function (app) {
         });};
 
     //USER REST API CALLS
-    app.get('/api/restaurant/name/:name', findRestaurantByNameAndLocation);
+    app.get('/api/restaurant/name/:name/location/:location', findRestaurantByNameAndLocation);
     app.get('/api/restaurant/location/:location', findAllRestaurantsByLocation);
     app.get('/api/restaurant/name/:name/rid/:rid/lat/:lat/lng/:lng', findRestaurantByNameAndIdAndLocation);
 

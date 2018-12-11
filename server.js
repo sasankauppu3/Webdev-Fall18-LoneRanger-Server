@@ -27,6 +27,9 @@ restaurantService(app)
 var reviewService = require('./services/review.service.server')
 reviewService(app)
 
+var initService = require('./services/init.service.server')
+initService(app)
+
 home = (req, res) =>
     res.send("Server Home")
 app.get('/', home);

@@ -2,6 +2,8 @@ const reviewModel = require('../data/models/reviews/reviews.model.server')
 
 findAllReview = () => reviewModel.find()
 
+findAllReviewsForList = (following) => reviewModel.find({username: {$in: following}})
+
 findReviewById = (reviewId) => reviewModel.findById(reviewId)
 
 findReviewByUsernameForRestaurant = (username, restId) => reviewModel.find({username: username, restaurantID: restId})
@@ -23,5 +25,6 @@ module.exports = {
     findAllReviewsForRestaurant: findAllReviewsForRestaurant,
     findReviewByUsernameForRestaurant: findReviewByUsernameForRestaurant,
     findAllReviewsForUser: findAllReviewsForUser,
-    deleteReview: deleteReview
+    deleteReview: deleteReview,
+    findAllReviewsForList: findAllReviewsForList
 };

@@ -6,7 +6,9 @@ var reviewSchema = mongoose.Schema({
     restaurantID: String,
     restaurantName: String,
     restaurantLat: String,
-    restaurantLon: String
+    restaurantLon: String,
+    userRole: String,
+    created: {type: Date, default: Date.now()}
 }, {collection: 'Reviews'});
 
 module.exports = reviewSchema;
