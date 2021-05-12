@@ -1,4 +1,6 @@
-# Webdev-Fall18-LoneRanger-Server
+# Restaurant Hunter
+
+A mean stack-based web app to find nearby restaurants based on geolocation with Yelp API. The app allows user authentication with a review and rating ecosystem for users to find popular food places in their vicinity.
 
 ## [WEB APP LINK](https://loneranger-frontend.herokuapp.com/)
 
