@@ -1,0 +1,60 @@
+<style>
+  /* Set the size of the div element that contains the map */
+  #map {
+    height: 400px;  /* The height is 400 pixels */
+    width: 100%;  /* The width is the width of the web page */
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 detail-box">
+      <h1>{{res.name}}</h1>
+
+
+      <hr>
+
+      <p>
+        <span class="glyphicon glyphicon-list-alt badge badge-primary category ml-1" *ngFor="let cat of res.categories"><span
+          class="font"> <a style="color: white" routerLink="/home/term/{{cat.title}}/location/{{res.location.city}}">{{cat.title}}</a></span></span>
+        <span class="pull-right ml-2">{{res.rating}} stars</span>
+        <span class="pull-right ml-2">{{res.price}}</span>
+      </p>
+
+
+      <hr>
+
+      <div style="text-align: center">
+        <img style="height: 450px" class="img-responsive img-fluid" [src]="res.image_url">
+
+      </div>
+      <hr>
+      <app-restaurant-reviews></app-restaurant-reviews>
+    </div>
+
+    <div class="col-md-4  contact-box">
+
+      <div class="well">
+        <h4>Contact</h4>
+        <div>
+          <ul class="list-unstyled">
+            <li  *ngIf="res.location.display_address">Address: {{res.location.display_address}}
+            </li>
+            <li *ngIf="res.display_phone">Phone: {{res.display_phone}}
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="well">
+        <h4>Google Map</h4>
+        <div id="map"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

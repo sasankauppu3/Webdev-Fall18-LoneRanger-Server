@@ -1,0 +1,39 @@
+
+<div class="container table-hover adminTable">
+  <h4>List of users</h4>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Username</th>
+      <th scope="col">UserRole</th>
+      <th scope="col">FirstName</th>
+      <th scope="col">LastName</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody >
+    <tr *ngFor="let user of users; index as i">
+      <th scope="row">{{i}}</th>
+      <td><a href="/profile/{{user._id}}">{{user.username}}</a></td>
+      <td>{{user.role}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.phone}}</td>
+      <td><button class="btn" title="Delete User" style="background: transparent" (click)="deleteUser(user._id)"> <span  style="font-size: 1.5em; color: red;">
+  <i class="fas fa-user-minus"></i>
+</span></button>
+        <button class="btn" title="Change Role" style="background: transparent" (click)="changeUserRole(user._id, user.role)"> <span  style="font-size: 1.5em;color: #42A948">
+  <i  class="fas fa-exchange-alt"></i>
+</span></button>
+        <button *ngIf="user.role === 'generic' && !user.approvedFlag " class="btn" title="Approve request" style="background: transparent" (click)="approveRequest(user._id)"> <span  style="font-size: 1.5em;color: cornflowerblue">
+  <i class="fas fa-check-square"></i>
+</span></button></td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

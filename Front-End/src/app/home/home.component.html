@@ -1,0 +1,66 @@
+<div *ngIf="restaurants">
+  <div *ngIf="errorFlag" class="alert alert-warning">
+    <strong>Alert!</strong> Please specify location.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="position-relative overflow-hidden p-1 text-center bg-light text-light hero">
+    <h1>Cityu</h1>
+    <div class="col-md-8 mx-auto my-5">
+      <h1 style="text-align: center" class="display-4 city-head text-dark">{{cityHeader}}</h1>
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Keyword or Title" aria-label="Keyword or Title"
+                   aria-describedby="basic-addon1" [(ngModel)]="key" name="keywordOrTitle">
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+            </div>
+            <input type="text" autocomplete="off" class="form-control dropdown-toggle" id="dropdown MenuLink"
+                   required placeholder="Location" aria-label="Location" [(ngModel)]="location"
+                   name="location" data-toggle="dropdown">
+          </div>
+        </div>
+        <button class="btn btn-info mb-3 w-25" (click)='searchByLocation(key, location)' >Search</button>
+      </div>
+    </div>
+    <div class="product-device box-shadow d-none d-md-block"></div>
+    <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+  </div>
+
+  <div class="row m-2">
+    <div class="col-3 mt-3 d-flex align-items-stretch click-pointer" *ngFor="let res of restaurants" >
+      <div routerLink="/details/id/{{res.id}}/name/{{res.name}}/lat/{{res.coordinates.latitude}}/lng/{{res.coordinates.longitude}}" class="card">
+        <div class="card-header">
+          <h4 >{{res.name}}</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <h6 >{{res.price}}</h6><h6 class="ml-3">{{res.rating}} stars</h6>
+          </div>
+          <div>
+            <img src="{{res.image_url}}" class="col-6 img-thumbnail"/>
+            <br>
+            <div *ngIf="res.location.display_address">
+              Address: {{res.location.display_address}}
+            </div>
+            <br>
+            <div *ngIf="res.display_phone">
+              Phone: {{res.display_phone}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

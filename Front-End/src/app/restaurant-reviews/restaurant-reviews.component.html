@@ -1,0 +1,64 @@
+<div class="mt-4">
+  <span id="notLoggedin" class="text-danger" [hidden]="loginFlag">
+    You must be logged into comment. Log in <a routerLink="/login">here</a>
+  </span>
+  <div style="height: 10px"></div>
+  <button [disabled]="!loginFlag" type="button" class="btn btn-primary" (click)="showReviewText()">
+    <img class="starIcon" src="https://img.icons8.com/color/48/000000/christmas-star.png"> Write a review
+  </button>
+  <div style="height: 5px;"></div>
+  <textarea [hidden]="!showReview" class="form-control" placeholder="Enter review here.." rows="2" cols="60" [(ngModel)]="review"></textarea>
+  <div style="height: 15px"></div>
+  <div class="container-fluid mt-6" *ngIf="reviews.length > 0">
+    <span class="font-weight-bold mb-2">Total Comments: {{reviews.length}}</span>
+    <div *ngFor="let review of verifiedReview">
+      <div>
+        <a href="/profile/{{review.userID}}">
+          {{review.username}}
+        </a>
+        {{role}}
+        <img *ngIf="review.userRole == 'influencer'" class="verified" src="https://img.icons8.com/color/48/000000/verified-account.png">
+        <span style="font-size: 0.8em;float: right"><i>Posted On: {{review.cdate}}</i></span>
+      </div>
+      <span [hidden]="this.edit">{{review.review}}</span>
+      <hr>
+    </div>
+    <div *ngFor="let review of genericReviews">
+      <div>
+        <a href="/profile/{{review.userID}}">
+          {{review.username}}
+        </a>
+        {{role}}
+        <img *ngIf="review.userRole == 'influencer'" class="verified" src="https://img.icons8.com/color/48/000000/verified-account.png">
+        <span style="font-size: 0.8em;float: right"><i>Posted On: {{review.cdate}}</i></span>
+      </div>
+      <span [hidden]="this.edit">{{review.review}}</span>
+      <hr>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Review</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="postReview()" >Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid mt-6" *ngIf="reviews.length == 0">
+    There are no comments on this post. Be the first to make one!
+  </div>
+</div>

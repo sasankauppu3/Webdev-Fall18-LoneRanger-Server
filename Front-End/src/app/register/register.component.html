@@ -1,0 +1,73 @@
+<div>
+  <form class="form-validation" #form="ngForm">
+    <div class="alert alert-danger" [hidden]="!usernameExists">
+      Username already exists, please try a different one.
+    </div>
+
+    <div class="form-group row">
+      <label for="username" class="col-sm-3 col-form-label">Username</label>
+      <div class="col-sm-9">
+        <input type="text" [(ngModel)]="username" name="username" placeholder="Username"
+               id="username" class="form-control" required #userName="ngModel">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="password" class="col-sm-3 col-form-label">Password</label>
+      <div class="col-sm-9">
+        <input type="password" placeholder="123qwe#$" [(ngModel)]="password" name="password"
+               id="password" class="form-control" required #pass="ngModel">
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <label for="verifypass" class="col-sm-3 col-form-label">Verify Password</label>
+      <div class="col-sm-9">
+        <input type="password" placeholder="123qwe#$" id="verifypass"
+               [(ngModel)]="verifyPassword" name="verifyPassword" class="form-control" [pattern]="password" required
+               #vPass="ngModel">
+        <div [hidden]="vPass.valid || vPass.pristine" class="mt-2 alert alert-danger">
+          Password do not match!!
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="email" class="col-sm-3 col-form-label ">Email</label>
+      <div class="col-sm-9">
+        <input type="email" placeholder="abc@xyz.com" email="true" [(ngModel)]="email"
+               id="email" name="email" class="form-control" #emailId="ngModel" required >
+        <div [hidden]="emailId.valid || emailId.pristine" class="mt-2 alert alert-danger">
+          Please enter a valid email!!
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="inlineRadio1" class="col-sm-3 col-form-label">User Role</label>
+
+      <div class="col-sm-9">
+        <div class="form-check form-check-inline bg-light text-dark rounded py-2 px-3">
+          <input class="form-check-input " type="radio" name="role"
+                 id="inlineRadio1" [(ngModel)]="role" value="generic">
+          <label class="form-check-label" for="inlineRadio1">Generic</label>
+        </div>
+        <div class="form-check form-check-inline bg-light text-dark rounded ml-2 py-2 px-3">
+          <input class="form-check-input" type="radio" name="role"
+                 id="inlineRadio2" [(ngModel)]="role" value="influencer">
+          <label class="form-check-label" for="inlineRadio2">Influencer / Critic</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <span class="col-sm-3"></span>
+      <div class="col-sm-9 d-inline-block">
+        <div class="py-1">
+          <button type="button" (click)="register(username, password, email, role); form.reset(); "
+                  [disabled]="!form.form.valid" class="btn btn-success form-control" id="signup">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,106 @@
+
+
+
+<div class="card-header row" style="height: 250px" >
+    <div style="margin-left: 15%;margin-top: 1%">
+      <img src="https://s3.amazonaws.com/assets.zipsite.net/images/jayson/handyman/asset/default-blue-462x462.png"
+           alt="Italian Trulli" height="200" >
+    </div>
+    <div style="margin-left: 50px; margin-top: 45px">
+      <h1 >{{user.username}} <img *ngIf="user.role == 'influencer'" class="verified" src="https://img.icons8.com/color/48/000000/verified-account.png"> </h1>
+      <h6>{{user.firstName}} {{user.lastName}}</h6>
+      <div class="row" style="margin-left: -1px">
+        <div>
+          <img src="https://img.icons8.com/color/48/000000/very-popular-topic.png">
+           <b>{{this.userReviews.length}}</b> reviews
+        </div>
+
+        <div style="margin-left: 10px">
+          <img src="https://img.icons8.com/color/48/000000/groups.png">
+          <b>{{this.user.following.length}}</b> following
+        </div>
+        <div style="margin-left: 10px" >
+          <img src="https://img.icons8.com/color/48/000000/queue.png">
+          <b >{{this.user.followers.length}}</b> followers
+        </div>
+      </div>
+      <div *ngIf="user.role === 'influencer'">
+        <div [hidden]="isfollowed">
+          <button title="Please login to continue" [disabled] = '!loginFlag'
+                  class="btn btn-block btn-success" (click)="followUser(user)">Follow</button>
+        </div>
+        <div [hidden]="!isfollowed" >
+          <button title="Please login to continue" [disabled] = '!loginFlag'
+                  class="btn btn-block btn-danger" (click)="UnfollowUser(user)">Unfollow</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<div  class="container" style="margin-top: 15px">
+<span id="notLoggedin" class="text-danger" [hidden]="loginFlag">
+    You must be logged in to view details. Log in <a routerLink="/login">here</a>
+  </span>
+  <div [hidden]="!loginFlag">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" data-target="#review">Reviews</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" data-target="#following">Following</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" data-target="#followers">Followers</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="container tab-pane active in" id="review">
+        <div *ngFor="let review of userReviews" style="margin-top: 20px">
+          <div>
+            <a routerLink="/details/id/{{review.restaurantID}}/name/{{review.restaurantName}}/lat/{{review.restaurantLat}}/lng/{{review.restaurantLon}}">
+              {{review.restaurantName}}
+            </a>
+            {{role}}
+            <img *ngIf="review.userRole == 'influencer'" class="verified" src="https://img.icons8.com/color/48/000000/verified-account.png">
+            <span style="font-size: 0.8em;float: right"><i>Posted On: {{review.cdate}}</i></span>
+          </div>
+          <span [hidden]="this.edit">{{review.review}}</span>
+          <hr>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="following">
+        <div *ngFor="let usr of following" style="margin-top: 20px">
+          <div>
+            <a href="/profile/{{usr._id}}">
+              {{usr.username}}
+            </a>
+            <img *ngIf="usr.role == 'influencer'" class="verified" src="https://img.icons8.com/color/48/000000/verified-account.png">
+            <!--<span style="font-size: 0.8em;float: right"><i>Posted On: {{review.cdate}}</i></span>-->
+          </div>
+          <!--<span [hidden]="this.edit">{{r.review}}</span>-->
+          <hr>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="followers">
+        <div *ngFor="let usr of followers" style="margin-top: 20px">
+          <div>
+            <a href="/profile/{{usr._id}}">
+              {{usr.username}}
+            </a>
+            <img *ngIf="usr.role == 'influencer'" class="verified" src="https://img.icons8.com/color/48/000000/verified-account.png">
+            <!--<span style="font-size: 0.8em;float: right"><i>Posted On: {{review.cdate}}</i></span>-->
+          </div>
+          <!--<span [hidden]="this.edit">{{r.review}}</span>-->
+          <hr>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

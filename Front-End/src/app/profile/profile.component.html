@@ -1,0 +1,63 @@
+<div class="container card rounded">
+  <div class="card-header">
+    <div class="alert-success alert" role="alert" [hidden]="!updateFlag">
+      Profile successfully updated.
+    </div>
+    <h3> Personal Information </h3>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <form>
+          <div class="form-group row m-2">
+          <label for="username" class="text-center col-sm-2 col-form-label"><b>Username</b></label>
+          <input [(ngModel)]="username" name="username"
+                 id="username" class="form-control  col-sm-5 " placeholder="Username">
+          </div>
+
+        <div class="form-group row m-2">
+          <label for="firstname" class="text-center col-form-label col-sm-2 "><b>First Name</b></label>
+          <input [(ngModel)]="firstName" name="firstname"
+                 id="firstname" class="form-control  col-sm-5 " placeholder="First Name">
+        </div>
+
+
+        <div class="form-group row m-2">
+          <label for="lastname" class="text-center col-form-label col-sm-2 "><b>Last Name</b></label>
+          <input [(ngModel)]="lastName" name="lastName"
+                 id="lastname" class="form-control  col-sm-5 " placeholder="Last Name">
+        </div>
+
+        <div class="form-group row m-2">
+          <label for="email" class="text-center col-form-label col-sm-2 "><b>Email</b></label>
+          <div class="input-group mb-2  col-sm-5 ">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-envelope"></i>
+              </div>
+            </div>
+            <input  [(ngModel)]="email" name="email" id="email" class="form-control " placeholder="abc@abc.com">
+          </div>
+        </div>
+
+        <div class="form-group row m-2">
+          <label for="phone" class="text-center col-form-label col-sm-2 "><b>Phone</b></label>
+          <div class="input-group mb-2  col-sm-5">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-phone"></i>
+              </div>
+            </div>
+            <input [(ngModel)]="phone" name="phone" id="phone" class="form-control  " placeholder="(555)555-5555">
+          </div>
+        </div>
+
+        <div class="form-group row m-2">
+          <div class="col-sm-1"></div>
+          <button id="createBtn" class="btn btn-block m-3 col-sm-2 btn-success"
+                   (click)="update()">Update Info</button>
+          <button id="cancelBtn" class="btn btn-danger btn-block m-3  col-sm-2 " (click)="cancel()">Cancel</button>
+        </div>
+      </form>
+    </li>
+  </ul>
+</div>
